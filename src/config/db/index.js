@@ -1,16 +1,15 @@
-const mongoose = require('mongoose')
-
+const mongoose = require('mongoose');
+import { env } from '~/config/environment'
 async function connect() {
   try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/my_education', {
+    await mongoose.connect( env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
-    }).then( ()=>
-      console.log('Successfully!'))
+    }).then(()=>
+      console.log('You successfully connected to db!'))
 
   } catch (error) {
-    console.log('Error')
+    console.log('Connect db failed!')
   }
 }
 

@@ -14,8 +14,8 @@ class CourseController {
   show(req, res, next) {
 
     Course.findOne({ slug: req.params.slug })
-      .then(course => {
-        res.render('courses/show', { course: mongooseToObject(course) })
+      .then(product => {
+        res.render('product/show', { course: mongooseToObject(product) })
       })
       .catch(next)
 
@@ -32,7 +32,7 @@ class CourseController {
     course.slug = req.body.name
     course.save().then(() => res.redirect('/me/stored/courses'))
       .catch(error => {
-        res.render('Trùng Tên Khóa Học')
+        res.render('Trùng Tên Khóa Học', error)
       })
 
 
@@ -75,7 +75,7 @@ class CourseController {
         .catch(next)
       break
     default:
-      res.json({ message: 'Action is invalib ' })
+      res.json({ message: 'Action is invalid ' })
     }
 
   }

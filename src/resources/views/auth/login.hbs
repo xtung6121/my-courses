@@ -1,0 +1,32 @@
+ <main>
+    <form class="login-form" action="/login" method="POST" novalidate>
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input
+          class="<%= validationErrors.find(error => error.param === 'email') ? 'invalid' : '' %>"
+          type="email"
+          name="email"
+          id="email"
+          value="<%= oldInput.email %>"
+        >
+      </div>
+      <div class="form-control">
+        <label for="password">Mật khẩu</label>
+        <input
+          class="<%= validationErrors.find(error => error.param === 'password') ? 'invalid' : '' %>"
+          type="password"
+          name="password"
+          id="password"
+          value="<%= oldInput.password %>"
+        >
+      </div>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn" style="margin: 20px auto;" type="submit">Đăng nhập</button>
+    </form>
+    <div class="register" style="margin: 20px 0;">
+        <a href="/register">Đăng kí tài khoản</a>
+    </div>
+    <div class="reset">
+      <a href="/reset-password">Quên mật khẩu ?</a>
+    </div>
+  </main>
