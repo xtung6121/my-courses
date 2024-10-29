@@ -1,31 +1,55 @@
 <div class="mt-4">
-<h3>Đăng khóa học</h3>
-<form method="post" action="/courses/store">
-  <div class="form-group">
-    <label for="name">Tên khóa học</label>
-    <input type="text" class="form-control" id="name" name="name">
-  </div>
-  <div class="form-group">
-    <label for="description">Mô tả khóa học</label>
-    <input type="text" class="form-control" id="description" name="description">
-  </div>
-  <div class="form-group">
-    <label for="image">Hình ảnh</label>
-    <input type="text" class="form-control" id="image" name="image">
-  </div>
-  <div class="form-group">
-    <label for="videoId">Video ID</label>
-    <input type="text" class="form-control" id="videoId" name="videoId">
-  </div>
-  <div class="form-group">
-    <label for="level">Giá khóa học</label>
-    <input type="text" class="form-control" id="level" name="level">
-  </div>
-  <div class="form-group">
-    <label for="price">Price</label>
-    <input type="text" class="form-control" id="price" name="price">
-  </div>
- 
-  <button type="submit" class="btn btn-primary">Thêm khóa học</button>
-</form>
+  <h3>Đăng nick</h3>
+  <form method="post" action="/courses/store">
+    <div class="form-group input-group">
+      <select class="custom-select" id="inputGroupSelect01">
+        <option selected>Hành tinh</option>
+        <option value="1">Xayda</option>
+        <option value="2">Trái Đất</option>
+        <option value="3">Namec</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="description">Mô tả nick</label>
+      <input type="text" class="form-control" id="description" name="description">
+    </div>
+    <div class="form-group">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Upload image</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile01">
+          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="videoId">Video ID</label>
+      <input type="text" class="form-control" id="videoId" name="videoId">
+    </div>
+    <div class="form-group">
+      <label for="price">Giá nick</label>
+      <input type="text" class="form-control" id="price" name="price">
+      <select class="custom-select" id="inputGroupSelect01">
+        <option selected>Tiền tệ</option>
+        <option value="1">Đồng</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Tài khoản</label>
+      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="Nhập tên tài khoản">
+      <small id="emailHelp" class="form-text text-muted"></small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mật khẩu</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mật khẩu cấp 2</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm nick</button>
+  </form>
 </div>

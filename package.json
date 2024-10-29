@@ -17,12 +17,24 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.22.10",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
+    "express-validator": "^7.2.0",
+    "flash": "^1.1.0",
     "method-override": "^3.0.0",
-    "mongoose": "^5.13.16",
+    "moment": "^2.30.1",
+    "mongoose": "^5.13.22",
     "mongoose-delete": "^1.0.1",
-    "mongoose-slug-generator": "^1.0.4"
+    "mongoose-slug-generator": "^1.0.4",
+    "nodemailer": "^6.9.15",
+    "nodemailer-sendgrid-transport": "^0.2.0",
+    "schema": "^0.2.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",
@@ -33,6 +45,6 @@
     "@babel/preset-env": "^7.22.10",
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.47.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.7"
   }
 }
