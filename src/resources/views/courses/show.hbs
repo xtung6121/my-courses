@@ -1,11 +1,54 @@
-<main class="center">
-    <h1>{{course.title}}</h1>
-    <div class="image">
-        <img src="{{course.imageUrl}}" alt="{{course.title}}">
+<section class="py-5">
+    <div class="container py-xl-3 py-lg-2">
+        <div class="row align-items-center">
+            <div class="mb-3 mb-lg-0 col-xxl-5 col-lg-6">
+                <div class="d-flex flex-column mb-3 mb-lg-0 gap-4">
+                    <div>
+                        <h2 class="mb-3 fw-semibold display-4">{{product.title}}</h2>
+                        <p class="lead">{{product.description}}</p>
+                        <p class="lead" style="font-weight:500">{{product.price}} Vnđ</p>
+                    </div>
+                    <div class="d-flex flex-row align-items-center gap-3">
+                        <a href="" class="btn btn-danger" data-toggle="modal" data-id="{{this._id}}"
+                            data-target="#payment-show-modal">MUA NGAY</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 offset-xxl-1">
+                <div class="position-relative ms-lg-8 ms-xl-0 me-xl-7">
+                    <img class="w-100 rounded-3" src="{{product.imageUrl}}" />
+                </div>
+            </div>
+        </div>
     </div>
-    <h2>{{course.price}} VNĐ</h2>
-    <p class="product-detail-description">{{course.description}}</p>
-    <button>
-        <a class="product-item-btn" href="/buy-nick">Mua nick</a>
-    </button>
-</main>
+</section>
+
+<!-- Modal -->
+<div id="payment-show-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content align-item-center">
+            <div class="modal-header">
+                <h5 class="modal-title">Thanh toán</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body justify-content-center ">
+                <p class="lead" style="font-weight:500">Số tiền: {{product.price}} Vnđ</p>
+                <del class="text-body-tertiary ms-1">Giá gốc: {{sum 1 product.price }}</del>
+                <p>STK: 00005457339 TP Bank</p>
+                <p>Nội dung chuyển tiền:</p>
+                <div>
+                    <img width="450" class="qr-img"
+                        src="https://cdn.britannica.com/17/155017-050-9AC96FC8/Example-QR-code.jpg"
+                        alt="QR chuyển tiền">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>

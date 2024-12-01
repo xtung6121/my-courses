@@ -1,19 +1,31 @@
-<div class="mt-4">
+<div class="mt-4 justify-content-center">
   <h3>Đăng nick</h3>
-  <form method="post" action="/courses/store">
-    <div class="form-group input-group">
-      <select class="custom-select" id="inputGroupSelect01">
+  <form method="post" action="/products/store" enctype="application/json">
+    {{!-- <div class="form-group input-group">
+      <select class="custom-select" id="inputGroupSelect01" name="userId">
         <option selected>Hành tinh</option>
         <option value="1">Xayda</option>
         <option value="2">Trái Đất</option>
         <option value="3">Namec</option>
       </select>
+    </div> --}}
+    <div class="form-group">
+      <label for="title">Tiêu đề</label>
+      <input type="text" class="form-control" name="title">
+    </div>
+    <div class="form-group">
+      <label for="price">Giá nick</label>
+      <input type="text" class="form-control" name="price">
+      {{!-- <select class="custom-select ml-auto" id="inputGroupSelect01" name="price">
+        <option selected>Tiền tệ</option>
+        <option value="1">Đồng</option>
+      </select> --}}
     </div>
     <div class="form-group">
       <label for="description">Mô tả nick</label>
-      <input type="text" class="form-control" id="description" name="description">
+      <input type="text" class="form-control" name="description">
     </div>
-    <div class="form-group">
+    {{!-- <div class="form-group">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">Upload image</span>
@@ -22,26 +34,18 @@
           <input type="file" class="custom-file-input" id="inputGroupFile01">
           <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
         </div>
-      </div>
+      </div> --}}
     </div>
     <div class="form-group">
       <label for="videoId">Video ID</label>
-      <input type="text" class="form-control" id="videoId" name="videoId">
+      <input type="text" class="form-control" id="videoId" name="imageUrl">
     </div>
     <div class="form-group">
-      <label for="price">Giá nick</label>
-      <input type="text" class="form-control" id="price" name="price">
-      <select class="custom-select" id="inputGroupSelect01">
-        <option selected>Tiền tệ</option>
-        <option value="1">Đồng</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Tài khoản</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-        placeholder="Nhập tên tài khoản">
+      <label for="userId">Tài khoản</label>
+      <input type="text" class="form-control" id="userId" name="userId" placeholder="Nhập tên tài khoản">
       <small id="emailHelp" class="form-text text-muted"></small>
     </div>
+    {{!--
     <div class="form-group">
       <label for="exampleInputPassword1">Mật khẩu</label>
       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
@@ -49,7 +53,7 @@
     <div class="form-group">
       <label for="exampleInputPassword1">Mật khẩu cấp 2</label>
       <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
+    </div> --}}
     <button type="submit" class="btn btn-primary">Thêm nick</button>
   </form>
 </div>

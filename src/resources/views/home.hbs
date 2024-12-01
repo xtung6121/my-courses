@@ -1,28 +1,49 @@
-<div class="mt-4">
-    <div class="row">
-        {{#each product}}
-        <div class="col-sm-6 col-lg-4">
-            <div class="card card-course-item" style="margin-top: 20px">
-                <a href="/products/{{this.slug}}">
-                    <img class="card-img-top" src="{{this.imageUrl}}" alt="{{this.title}}">
-
-                </a>
-                <div class="card-body">
-                    <a href="/products/{{this.slug}}">
-                        <h5 class="card-title">{{this.title}}</h5>
-
-                    </a>
-                    <p class="card-text">{{this.description}}</p>
-
-                    <a href="/payment" class="btn btn-primary">Mua nick</a>
-                </div>
+<section class="bg-light pg-lib-item py-5">
+    <div class="row ">
+        <div class="col-lg-8 offset-lg-2 col-md-12 col-12 ">
+            <div class="text-center mb-5 pb-lg-3">
+                <h2 class="my-3 fw-semibold">Features to make you stand out</h2>
+                <p class="mb-0 lead">Manage your projects from start to finish. With all of your projects in Block,
+                    you’ll
+                    always know who’s doing what, by when.</p>
             </div>
         </div>
-        
-
-        {{/each}}
-
-
-
     </div>
-</div>
+    <div class="container py-5">
+        <div class="justify-content-center row g-4">
+            {{#each product}}
+            <div class="col-lg-4 col-md-6">
+                <div class="bg-white shadow rounded">
+                    <a href="/products/{{this.slug}}" class="d-block">
+                        <img src="{{this.imageUrl}}" alt="{{this.title}}" class="img-fluid w-100 rounded-top" alt="..."
+                            width="700" height="480" />
+                    </a>
+                    <div class="py-4 px-3">
+                        <a href="/products/{{this.slug}}" class="text-dark text-decoration-none">
+                            <h4 class="mb-3 fs-5">{{this.title}}
+                            </h4>
+                        </a>
+                        <p class="card-text">{{this.description}}</p>
+                        <div class="align-items-center d-flex justify-content-between small">
+                            <a href="/products/{{this.slug}}"
+                                class="btn btn-primary align-items-center d-flex text-decoration-none">
+                                Xem chi tiết
+                            </a>
+                            <div>
+                                {{!-- <h4 class="h6 mb-0">TomyShop</h4> --}}
+                                <p class="mb-0 text-secondary"></p>
+                            </div>
+                            <span class="text-secondary">{{getMinutes createdAt}} mins ago</span>
+                        </div>
+                    </div>
+                </div>
+                <br></br>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+
+<script>
+
+</script>
