@@ -3,7 +3,8 @@ const router = express.Router()
 
 const buynickController = require('~/controllers/BuyNickController')
 
-router.get('/:slug/payment', buynickController.payment)
+router.get('/payment/:id', buynickController.getProduct)
+router.get('/payment', buynickController.payment)
 router.get('/', buynickController.index)
 
 module.exports = router

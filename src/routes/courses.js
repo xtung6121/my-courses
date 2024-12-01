@@ -1,9 +1,9 @@
-const express = require('express')
-const router = express.Router()
+// const express = require('express')
+// const router = express.Router()
 
-const courseController = require('~/controllers/CoursesController')
+// const courseController = require('~/controllers/CoursesController')
 
-//router.get('/courses/login', courseController.login)
+// //router.get('/courses/login', courseController.login)
 // router.get('/courses/create', courseController.create)
 // router.post('/courses/store', courseController.store)
 // router.get('/courses/:id/edit', courseController.edit)
@@ -14,4 +14,4 @@ const courseController = require('~/controllers/CoursesController')
 // router.delete('/courses/:id/force', courseController.forceDelete)
 // router.get('/courses/:slug', courseController.show)
 
-module.exports = router
+// module.exports = router

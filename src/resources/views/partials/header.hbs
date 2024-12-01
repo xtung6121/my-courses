@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+{{!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
     <a class="navbar-brand" href="/">Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -6,27 +6,63 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            <img src="https://ngocrongchat.com/images/chatlogo.png" width="80px" alt="" class="user-avatar">
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/products/create">Đăng nick</a>
-              <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/courses">Nick của Tomy</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/news">News</a>
-             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/login">Đăng nhập tài khoản</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/logout">Đăng xuất</a>
-          </div>
-        </li>
-      </ul>
 
-    </div>
   </div>
-</nav>
+</nav> --}}
+
+<section>
+  <nav class="bg-white navbar navbar-expand-lg navbar-light pg-lib-item py-lg-1" data-navbar-id="{bs-navbar}">
+    <div class="container">
+      <a class="fw-bold navbar-brand fs-4" href="/">
+        <span>Your Logo</span>
+      </a>
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{bs-navbar}"
+        aria-controls="{bs-navbar}" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="{bs-navbar}">
+        <ul class="mb-2 mb-lg-0 ms-auto navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Contact</a>
+          </li>
+        </ul>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <img src="https://th.bing.com/th/id/OIP.l3pyHp3P_Ytr0yMHMsWZtwHaHa?rs=1&pid=ImgDetMain" width="80px"
+                  alt="" class="user-avatar">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/products/create">Đăng nick</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/me/stored/courses">Nick của Tomy</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/news">News</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/logout">Đăng xuất</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+        {{!-- <div class="ms-lg-3 ml-auto">
+          <a href="/login" class="btn btn-outline-primary pb-2 pe-4 ps-4 pt-2">Log In</a>
+          <a class="btn btn-primary pb-2 pe-4 ps-4 pt-2" href="/signup">Sign up</a>
+        </div> --}}
+      </div>
+    </div>
+  </nav>
+</section>
