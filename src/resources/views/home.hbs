@@ -1,47 +1,66 @@
-<section class="bg-light pg-lib-item py-5">
-    <div class="row ">
-        <div class="col-lg-8 offset-lg-2 col-md-12 col-12 ">
-            <div class="text-center mb-5 pb-lg-3">
-                <h2 class="my-3 fw-semibold">Features to make you stand out</h2>
-                <p class="mb-0 lead">Manage your projects from start to finish. With all of your projects in Block,
-                    you’ll
-                    always know who’s doing what, by when.</p>
+<section class="bg-light pg-lib-item py-2">
+    <nav aria-label="Page navigation">
+        <div class="row ">
+            <div class="col-lg-8 offset-lg-2 col-md-12 col-12 ">
+                <div class="text-center mb-2 pb-lg-2">
+                    <form method="POST" action="/search">
+                        <div class="form-group">
+                            <label class="p-2" for="search-input">Từ khóa</label>
+                            <input type="text" name="q" class="form-control" id="search-input"
+                                placeholder="Nhập từ khóa...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container py-5">
-        <div class="justify-content-center row g-4">
-            {{#each product}}
-            <div class="col-lg-4 col-md-6">
-                <div class="bg-white shadow rounded">
-                    <a href="/products/{{this.slug}}" class="d-block">
-                        <img src="{{this.imageUrl}}" alt="{{this.title}}" class="img-fluid w-100 rounded-top" alt="..."
-                            width="700" height="480" />
-                    </a>
-                    <div class="py-4 px-3">
-                        <a href="/products/{{this.slug}}" class="text-dark text-decoration-none">
-                            <h4 class="mb-3 fs-5">{{this.title}}
-                            </h4>
+        <div class="container py-2">
+            <div class="justify-content-center row g-4">
+                {{#each product}}
+                <div class="col-lg-4 col-md-6">
+                    <div class="bg-white shadow rounded">
+                        <a href="/products/{{this.slug}}" class="d-block">
+                            <img src="{{this.imageUrl}}" alt="{{this.title}}" class="img-fluid w-100 rounded-top"
+                                alt="..." width="700" height="480" />
                         </a>
-                        <p class="card-text">{{this.description}}</p>
-                        <div class="align-items-center d-flex justify-content-between small">
-                            <a href="/products/{{this.slug}}"
-                                class="btn btn-primary align-items-center d-flex text-decoration-none">
-                                Xem chi tiết
+                        <div class="py-4 px-3">
+                            <a href="/products/{{this.slug}}" class="text-dark text-decoration-none">
+                                <h4 class="mb-3 fs-5">{{this.title}}
+                                </h4>
                             </a>
-                            <div>
-                                {{!-- <h4 class="h6 mb-0">TomyShop</h4> --}}
-                                <p class="mb-0 text-secondary"></p>
+                            <p class="card-text">{{this.description}}</p>
+                            <div class="align-items-center d-flex justify-content-between small">
+                                <a href="/products/{{this.slug}}"
+                                    class="btn btn-primary align-items-center d-flex text-decoration-none">
+                                    Xem chi tiết
+                                </a>
+                                <div>
+                                    {{!-- <h4 class="h6 mb-0">TomyShop</h4> --}}
+                                    <p class="mb-0 text-secondary"></p>
+                                </div>
+                                <span class="text-secondary">{{getMinutes createdAt}} mins ago</span>
                             </div>
-                            <span class="text-secondary">{{getMinutes createdAt}} mins ago</span>
                         </div>
                     </div>
+                    <br></br>
                 </div>
-                <br></br>
+                {{/each}}
             </div>
-            {{/each}}
         </div>
-    </div>
+        {{!-- <div class="mr-6">
+            <ul class="pagination justify-content-end">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </div> --}}
+    </nav>
 </section>
 
 <script>

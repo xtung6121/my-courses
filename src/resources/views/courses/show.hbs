@@ -9,7 +9,7 @@
                         <p class="lead" style="font-weight:500">{{product.price}} Vnđ</p>
                     </div>
                     <div class="d-flex flex-row align-items-center gap-3">
-                        <a href="" class="btn btn-danger" data-toggle="modal" data-id="{{this._id}}"
+                        <a href="" class="product-payment-btn btn btn-danger" data-toggle="modal" data-id="{{this._id}}"
                             data-target="#payment-show-modal">MUA NGAY</a>
                     </div>
                 </div>
@@ -34,10 +34,12 @@
                 </button>
             </div>
             <div class="modal-body justify-content-center ">
-                <p class="lead" style="font-weight:500">Số tiền: {{product.price}} Vnđ</p>
+                <p class="lead" style="font-weight:500"><span id="paid-price">
+                        Số tiền: {{product.price}} Vnđ
+                    </span></p>
                 <del class="text-body-tertiary ms-1">Giá gốc: {{sum 1 product.price }}</del>
                 <p>STK: 00005457339 TP Bank</p>
-                <p>Nội dung chuyển tiền:</p>
+                <p><span id="paid-content">Nội dung chuyển khoản:</span></p>
                 <div>
                     <img width="450" class="qr-img"
                         src="https://cdn.britannica.com/17/155017-050-9AC96FC8/Example-QR-code.jpg"
@@ -52,3 +54,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    const btnPaymentProduct = document.querySelector('.product-payment-btn');
+    const getPaidPrice = document.getElementById('paid-price');
+    const getPaidDescription = document.getElementById('paid-content');
+    btnPaymentProduct.onclick = function () {
+        getPaidPrice
+    }  
+</script>

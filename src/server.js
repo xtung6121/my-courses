@@ -5,7 +5,7 @@ const path = require('path')
 const methodOverride = require('method-override')
 const db = require('./config/db')
 const bodyParser = require('body-parser')
-
+const validator = require('validator');
 const app = express()
 
 // Connect to DB
@@ -13,11 +13,6 @@ db.connect();
 
 const hostname = 'localhost'
 const port = 8017
-
-// config variable: path
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')))

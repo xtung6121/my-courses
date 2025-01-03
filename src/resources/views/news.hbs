@@ -1,1 +1,49 @@
-<h2>News Page</h2>
+<div class="font-family"
+    style='margin:0 60px; font-weight:500; color: #202124; font-family: "Helvetica", "Arial", sans-serif'>
+    <h2>Overview</h2>
+    <p>
+        Traffic Mirroring is a key feature in Google Cloud networking for security and network analysis. Its
+        functionality is similar to that of a network tap or a span session in traditional networking. In short, Packet
+        Mirroring captures network traffic (ingress and egress) from select "mirrored sources", copies the traffic, and
+        forwards the copy to "collectors".
+
+        It is important to note that Packet Mirroring captures the full payload of each packet and thus consumes
+        additional bandwidth. Because Packet Mirroring is not based on any sampling period, it is able to be used for
+        better troubleshooting, security solutions, and higher layer application based analysis.
+
+        Packet Mirroring is founded on a "Packet Mirroring Policy", which contains the following attributes:
+    <ul>
+        <li>VPC Network(s) </li>
+        <li>Mirrored Source(s) </li>
+        <li>Collector (destination) </li>
+        <li>Mirrored traffic (filter) </li>
+    </ul>
+
+
+    Here are a some key points that also need to be considered:
+    <ul>
+        <li>Only TCP, UDP and ICMP traffic may be mirrored. This, however, should satisfy the majority of use cases.
+        </li>
+        <li> "Mirrored Sources" and "Collectors" must be in the SAME Region, but can be in different zones and even
+            different
+            VPCs, as long as those VPCs are properly Peered.
+            Additional bandwidth charges apply, especially between zones. To limit the traffic being mirrored, filters
+            can
+            be used. </li>
+        <li>Additional bandwidth charges apply, especially between zones. To limit the traffic being mirrored, filters
+            can be used.
+        </li>
+    </ul>
+
+    One prime use case for "Packet Mirroring" is to use it in an Intrusion Detection System (IDS) solution. Some
+    cloud-based IDS solutions require a special service to run on each source VM, or to put an IDS virtual appliance
+    in-line between the network source and destination. Both of these have significant implications. For example,
+    the service based solution, though fully distributed, requires that the guest operating system supports the
+    software. The "in-line" solution can create a network bottleneck as all traffic must be funneled through the IDS
+    appliance. The in-line solution will also not be able to capture "east-west" traffic within VMs in the same VPC.
+
+    Google Cloud Packet Mirroring does not require any additional software on the VMs and it is fully distributed
+    across each of the mirrored virtual machines. The "Collector" IDS is placed out-of-path using an Internal
+    Network Load Balancer (ILB) and will receive both "north-south" traffic and "east-west" traffic.
+    </p>
+</div>
