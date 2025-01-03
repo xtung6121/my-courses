@@ -1,21 +1,29 @@
 const express = require('express')
-const { check, body } = require('express-validator');
 const router = express.Router()
-const User = require('~/models/User');
-const userController = require('~/controllers/UserController');
+const authController = require('~/controllers/AuthController')
+const UserSession = require('~/middlewares/GetUser')
 
-// router.get('/acc/sigup', userController.getSignup);
-router.get('/', userController.getLogin);
-router.post('/',
-    [
-        // Look for specific field but in request body only (unlike check, which looks in all features of incoming request [header, cookie, param, etc.])
-        body('email')
-          .isEmail()
-          .withMessage('Please enter a valid email.')
-          // validator.js built-in sanitizer (trims whitespace on sides of email, converts email to lowercase)
-          .normalizeEmail(),
-        body('password', 'Password must be valid.').isLength({ min: 8, max: 100 }),
-      ],
-    userController.postLogin);
+// Get User Middleware
+// router.use(UserSession)
 
-module.exports = router;
+//Logout
+router.get("/logout", authController.LogOut)
+
+
+//Middleware về trang chủ nếu đã đăng nhập
+router.use((req, res, next) => {
+  if (req.user != null && req.userInfo != null) {
+    return res.redirect('/')
+  }
+  else {
+    return next();
+  }
+})
+
+//Các controllers
+// router.get("/forget", authController.ForgetPassView)
+router.post('/login', authController.Login)
+router.post("/register", authController.Register)
+router.get('/login', authController.LoginView)
+router.get('/register', authController.RegisterView)
+module.exports = router

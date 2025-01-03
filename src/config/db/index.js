@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 import { env } from '~/config/environment'
 async function connect() {
   try {
-    await mongoose.connect( env.MONGODB_URI, {
+    await mongoose.connect(env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    }).then(()=>
+      useCreateIndex: true
+    }).then(() =>
       console.log('You successfully connected to db!'))
 
   } catch (error) {
