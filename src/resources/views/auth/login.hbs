@@ -1,3 +1,12 @@
+<style>
+  .user-message {
+    color: red;
+    text-align: center;
+    padding: 0 auto;
+    margin: 12px 20px 12px 0;
+  }
+</style>
+
 <div class="heading-page">
   <div class="container">
     <ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
@@ -20,24 +29,23 @@
           <div class="row justify-content-center">
             <div class="col-md-8">
               <div class="card">
-                {{#if message}}
-                {{{message}}}
-                {{/if}}
 
                 <div class="card-header">
                   <h4>Đăng nhập tài khoản</h4>
                 </div>
-
                 <div class="card-body">
+                  {{#if errorMessage}}
+                  <!-- Reminder: Using BEM methodology for class naming https://css-tricks.com/bem-101/ -->
+                  <div class="user-message user-message--error">{{errorMessage}}</div>
+                  {{/if}}
                   <form method="POST" action="/auth/login" aria-label="Đăng nhập">
                     <div class="form-group row">
-                      <label for="email" class="col-sm-4 col-form-label text-md-right">Tên đăng nhập</label>
+                      <label for="email" class="col-sm-4 col-form-label text-md-right">Email</label>
                       <div class="col-md-6">
-                        <input id="phoneOrEmail" type="text" class="form-control" name="phoneOrEmail" required autofocus
-                          placeholder="Email hoặc Số điện thoại">
+                        <input id="email" type="email" class="form-control" name="email" required autofocus
+                          placeholder="example@gmail.com">
                       </div>
                     </div>
-
                     <div class="form-group row">
                       <label for="password" class="col-md-4 col-form-label text-md-right">Mật khẩu</label>
                       <div class="col-md-6">
@@ -45,16 +53,6 @@
                           placeholder="Mật khẩu">
                       </div>
                     </div>
-
-                    <!-- <div class="form-group row">
-                                            <label for="password" class="col-md-4 col-form-label text-md-right">Mã bảo vệ</label>
-                                            <div class="col-md-6">
-                                                <div class="g-recaptcha" data-sitekey="6LeL2OQcAAAAAEIIAiWI7DMyniXwnInm6aGSzTBT"></div>
-                                                <script src="https://www.gstatic.com/recaptcha/releases/zLD1nfkNCJC1kEswSRdSyd-p/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-uObFsIlmV0TvXnvnUvEhhDHEbjC4zBHwRA8tg/f0CcVHlIG0XlMAK1oHeK06zBCe"></script>
-                                                <script src="https://www.google.com/recaptcha/api.js"></script>
-                                            </div>
-                                        </div> -->
-
                     <div class="form-group row">
                       <div class="col-md-6 offset-md-4">
                         <div class="checkbox">
@@ -64,11 +62,11 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="form-group row mb-0">
                       <div class="col-md-8 offset-md-4">
+                        {{!-- <input type="hidden" name="_csrf" value="{{csrfToken}}"> --}}
                         <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                        <a class="btn btn-link" href="/auth/forget">Quên mật khẩu?</a>
+                        <a class="btn btn-link" href="/auth/reset-password">Quên mật khẩu?</a>
                       </div>
                     </div>
                   </form>

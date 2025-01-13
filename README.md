@@ -27,6 +27,12 @@ Functions:
 4. Login, Logout and isAuthentication  (working..)
 5. Upload file IMG, AWS S3 service interface object 
 
-config db with .env 
+
+
+How to clone my project: 
+config db with .env.example
+
+run web: npm run dev
+
 
 Conclusion: Thanks for watching! <3 Like coding with me...

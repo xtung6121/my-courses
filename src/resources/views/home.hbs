@@ -1,3 +1,8 @@
+<style>
+    .section-patigation {
+        margin-right: 20px;
+    }
+</style>
 <section class="bg-light pg-lib-item py-2">
     <nav aria-label="Page navigation">
         <div class="row ">
@@ -9,7 +14,11 @@
                             <input type="text" name="q" class="form-control" id="search-input"
                                 placeholder="Nhập từ khóa...">
                         </div>
-                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+
+                        <button type="submit" class="btn btn-primary">
+                            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                            Tìm kiếm
+                        </button>
                     </form>
                 </div>
             </div>
@@ -47,19 +56,38 @@
                 {{/each}}
             </div>
         </div>
-        {{!-- <div class="mr-6">
+        <section class="mr-6 section-patigation">
             <ul class="pagination justify-content-end">
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    {{#if hasPreviousPage}}
+                    <a class="page-link" href="?page={{previousPage}}" tabindex="-1" aria-disabled="true">
+                        {{previousPage}}
+                    </a>
+                    {{/if}}
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    {{#if (and (ne currentPage 1) (ne previousPage 1))}}
+                    <a class="page-link" href="?page=1">1</a>
+                    {{/if}}
+                </li>
+                <li class="page-item">
+                    <!-- Prevent page number display if there's only a single page (relevant for admin products) -->
+                    {{#if (or hasNextPage hasPreviousPage)}}
+                    <a href="?page={{currentPage}}" class="active">{{currentPage}}</a>
+                    {{/if}}
+                </li>
+                <li class="page-item">
+                    {{#if (and (ne lastPage currentPage) (ne nextPage lastPage))}}
+                    <a class="page-link" href="?page={{lastPage}}">{{lastPage}}</a>
+                    {{/if}}
+                </li>
+                <li class="page-item">
+                    {{#if hasNextPage}}
+                    <a class="page-link" href="?page={{nextPage}}">{{nextPage}}</a>
+                    {{/if}}
                 </li>
             </ul>
-        </div> --}}
+        </section>
     </nav>
 </section>
 

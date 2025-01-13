@@ -1,21 +1,44 @@
+{{!-- <style>
+  .product-form {
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+    display: block;
+  }
+
+  .product-item {
+    width: 20rem;
+    max-width: 95%;
+    margin: 1rem;
+  }
+
+  .product__title {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .product__price {
+    text-align: center;
+    color: #4d4d4d;
+    margin-bottom: 0.5rem;
+  }
+
+  .product__description {
+    text-align: center;
+  }
+</style> --}}
+
+{{!-- handle create --}}
 <div class="mt-4 justify-content-center">
   <h3>Đăng sản phẩm</h3>
-  <form method="post" action="/products/store" enctype="application/json">
-    {{!-- <div class="form-group input-group">
-      <select class="custom-select" id="inputGroupSelect01" name="userId">
-        <option selected>Hành tinh</option>
-        <option value="1">Xayda</option>
-        <option value="2">Trái Đất</option>
-        <option value="3">Namec</option>
-      </select>
-    </div> --}}
+  <form class="product-form" method="post" action="/products/store" enctype="application/json">
     <div class="form-group">
       <label for="title">Tiêu đề</label>
       <input type="text" class="form-control" name="title">
     </div>
     <div class="form-group">
       <label for="price">Giá sản phẩm</label>
-      <input type="text" class="form-control" name="price">
+      <input type="text" class="form-control" name="price" step="1">
       {{!-- <select class="custom-select ml-auto" id="inputGroupSelect01" name="price">
         <option selected>Tiền tệ</option>
         <option value="1">Đồng</option>
@@ -23,37 +46,17 @@
     </div>
     <div class="form-group">
       <label for="description">Mô tả</label>
-      <input type="text" class="form-control" name="description">
-    </div>
-    {{!-- <div class="form-group">
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Upload image</span>
-        </div>
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFile01">
-          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-        </div>
-      </div> --}}
+      <textarea type="description" class="form-control" name="description" rows="5">
+      </textarea>
     </div>
     <div class="form-group">
       <label for="videoId">Video ID</label>
       <input type="text" class="form-control" id="videoId" name="imageUrl">
     </div>
-    <div class="form-group">
-      <label for="userId">Tài khoản</label>
-      <input type="text" class="form-control" id="userId" name="userId" placeholder="Nhập tên tài khoản">
-      <small id="emailHelp" class="form-text text-muted"></small>
-    </div>
-    {{!--
-    <div class="form-group">
-      <label for="exampleInputPassword1">Mật khẩu</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Mật khẩu cấp 2</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div> --}}
-    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-  </form>
+</div>
+<button class="product-form" type="submit" class="btn btn-primary">
+  <input type="hidden" name="_csrf" value="{{csrfToken}}">
+  Thêm sản phẩm
+</button>
+</form>
 </div>
