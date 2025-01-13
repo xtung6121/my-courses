@@ -1,67 +1,75 @@
-<section>
-  <nav class="bg-white navbar navbar-expand-lg navbar-light pg-lib-item py-lg-1" data-navbar-id="{bs-navbar}">
-    <div class="container">
-      <a class="fw-bold navbar-brand fs-4" href="/">
-        <span>Your Logo</span>
-      </a>
-      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{bs-navbar}"
-        aria-controls="{bs-navbar}" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse" id="{bs-navbar}">
+<style>
+  .user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 4px;
+    border-color: #252b36;
+  }
+</style>
+
+<nav class="bg-white navbar navbar-expand-lg navbar-light bg-light py-lg-1">
+  <div class="container">
+    <a class="navbar-brand" href="/">Logo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
         <ul class="mb-2 mb-lg-0 ms-auto navbar-nav">
           <li class="nav-item">
             <a class="nav-link px-lg-3 py-lg-4" aria-current="page" href="#">Trang chủ</a>
           </li>
+          {{#if isAuthenticated}}
+          {{!-- <li class="nav-item">
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Tính năng</a>
+          </li> --}}
           <li class="nav-item">
-            <a class="nav-link px-lg-3 py-lg-4" href="#">Thông tin</a>
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Giỏ hàng</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link px-lg-3 py-lg-4" href="#">Features</a>
+            <a class="nav-link px-lg-3 py-lg-4" href="#">Liên hệ</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-lg-3 py-lg-4" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link px-lg-3 py-lg-4" href="#">Contact</a>
-          </li>
+          {{/if}}
         </ul>
-        {{#if user}}
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <img src="https://th.bing.com/th/id/OIP.l3pyHp3P_Ytr0yMHMsWZtwHaHa?rs=1&pid=ImgDetMain" width="80px"
-                  alt="" class="user-avatar">
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="/products/create">Đăng sản phẩm</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/me/stored/courses">Quản lý sản phẩm</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/news">Tin tức</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/logout">Đăng xuất</a>
-              </div>
-            </li>
-          </ul>
-        </div>
-        {{else}}
-        <div class="ml-auto">
-          <span class="pull-right user-header" style="padding-top: 15px">
-            <a href="/auth/register" class="btn btn-third">
-              <i class="icon ion-android-person"></i>
-              Đăng ký
-            </a>
-            <a href="/auth/login" class="btn btn-second" style="background: #004b7f;border-color: #004b7f;">
-              <i class="fa ion ion-android-unlock"></i>
-              Đăng nhập
-            </a>
-          </span>
-        </div>
-        {{/if}}
+      </ul>
+
+
+      {{#if isAuthenticated}}
+      <ul class="mb-2 mb-lg-0 ms-auto navbar-nav">
+        <li class="nav-item dropdown mr-auto">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+            <img
+              src="https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-6/432062247_376911335247331_6281090602740944836_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEcNKws0wfyQlN4_pSLmOhjtR8w9x2q0hG1HzD3HarSEbNRgaf6pKJRFXHKE8wbFyvRg60Fe32sS-lsJ3_bE66t&_nc_ohc=vho472gQiDkQ7kNvgGXKQnE&_nc_zt=23&_nc_ht=scontent.fhan5-3.fna&_nc_gid=ALcaq-r_KlkWtYMfdMUj-RG&oh=00_AYD4euT4PR1S80b70iJTguywcnQNiiRkS0tCnLxwpks-rg&oe=6781A16D"
+              width="80px" alt="" class="user-avatar">
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/products/create">Đăng sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/me/stored/courses">Quản lý sản phẩm</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/news">Tin tức</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
+          </div>
+        </li>
+      </ul>
+      {{else}}
+      <div class="ml-auto">
+        <span class="pull-right user-header" style="padding-top: 15px">
+          <a href="/auth/register" class="btn btn-third">
+            <i class="icon ion-android-person"></i>
+            Đăng ký
+          </a>
+          <a href="/auth/login" class="btn btn-second">
+            <i class="fa ion ion-android-unlock"></i>
+            Đăng nhập
+          </a>
+        </span>
       </div>
+      {{/if}}
     </div>
-  </nav>
-</section>
+  </div>
+</nav>

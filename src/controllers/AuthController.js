@@ -1,213 +1,179 @@
-const { mutipleMongooseToObject } = require('~/utils/mongoose');
-const User = require("~/models/User/User")
-const LoginLog = require("~/models/LoginLog")
-const UserInfo = require('~/models/User/UserInfo')
-const Helper = require("~/Helpers/Helper")
-const validator = require('validator');
+import User, { findOne } from "~/models/User/User";
+import { validationResult } from 'express-validator';
+import { compare, hash } from 'bcryptjs';
+const bcrypt = require('bcryptjs');
 
 class AuthController {
-    ForgetPassView(req, res, next) {
+
+    LoginView(req, res, next) {
+        let message = req.flash('error');
+        // Workaround to solve issue of user message div being rendered even if no error, since otherwise errorMessage holds an empty array (truthy)
+        if (message && message.length > 0) {
+            message = message[0];
+        } else {
+            message = null;
+        }
+        //console.log(req.session.isLoggedIn)
+        res.render('auth/login', {
+            pageTitle: 'Log In',
+            errorMessage: message,
+            oldInput: {
+                email: '',
+                password: '',
+            },
+            validationErrors: [],
+        })
+
     }
 
-    Login = (req, res) => {
-        let phoneOrEmail = req.body.phoneOrEmail
-        let password = req.body.password
-        password = password.toLowerCase()
-        phoneOrEmail = phoneOrEmail.toLowerCase()
-        var isSDT = Helper.checkPhoneValid(phoneOrEmail)
+    postLogin(req, res, next) {
+        const { email, password } = req.body;
 
-        if (Helper.isEmpty(phoneOrEmail) || Helper.isEmpty(password)) {
-            res.render("auth/login", { message: Helper.ErrorMessage("Vui nhập đầy đủ thông tin đăng nhập!") })
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).render('auth/login', {
+                path: '/login',
+                pageTitle: 'Log In',
+                errorMessage: errors.array()[0].msg,
+                oldInput: {
+                    email,
+                    password,
+                },
+                validationErrors: errors.array(),
+            });
         }
-        else if (!validator.isLength(phoneOrEmail, { min: 6, max: 50 })) {
-            res.render("auth/login", { message: Helper.ErrorMessage("Tài khoản chỉ chấp nhận từ 6 kí tự đến 50 kí tự!") })
-        }
-        else if (!validator.isLength(password, { min: 6, max: 50 })) {
-            res.render("auth/login", { message: Helper.ErrorMessage("Mật khẩu chỉ chấp nhận từ 6 kí tự đến 50 kí tự!!") })
-        }
-        else {
-            User.findOne({ Username: phoneOrEmail }).exec((err, user) => {
-                if (user) {
-                    const isValidPass = Helper.validPassword(password, user.Password)
-                    if (!isValidPass || user.IsLock) // sai pass hoac bi khoa
-                    {
-                        res.render("", { message: Helper.ErrorMessage("Thông tin tài khoản không đúng hoặc bị khóa!") })
-                    }
-                    else //login ok 
-                    {
-                        req.session.UserId = user._id
-                        res.redirect("/")
-                        var userAgent = req.get('User-Agent');
-                        var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-                        const regexExp = /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/gi;
-                        const isIpv6 = regexExp.test(ip)
-                        var ipv4 = ""
-                        if (isIpv6) {
-                            ipv4 = Helper.getIpv4FromIpv6(ip)
-                        }
-                        else {
-                            ipv4 = ip
-                        }
-                        LoginLog.create({ ip: ipv4, userAgent: userAgent, uid: user._id })
-                    }
+
+        User.findOne({ email })
+            .then((user) => {
+                if (!user) {
+                    return res.status(422).render('auth/login', {
+                        path: '/login',
+                        pageTitle: 'Log In',
+                        errorMessage: 'Invalid email or password.',
+                        oldInput: {
+                            email,
+                            password,
+                        },
+                        validationErrors: [],
+                    });
                 }
-                else {
-                    var temp2 = { email: phoneOrEmail }
-
-                    if (isSDT) {
-                        const Phonecrack = Helper.phoneCrack(phoneOrEmail)
-                        if (Phonecrack != null) {
-                            phoneOrEmail = Phonecrack.phone
-                        }
-                        temp2 = { phone: phoneOrEmail }
-
-                    }
-                    UserInfo.findOne(temp2).exec((err, checkEP) => {
-
-                        if (checkEP) {
-
-                            User.findOne({ _id: checkEP.uid }).exec((err, user) => {
-                                if (user) {
-                                    const isValidPass = Helper.validPassword(password, user.Password)
-                                    if (!isValidPass || user.IsLock) // sai pass hoac bi khoa
-                                    {
-                                        res.render("auth/login", { message: Helper.ErrorMessage("Thông tin tài khoản không đúng hoặc bị khóa!") })
-                                    }
-                                    else //login ok 
-                                    {
-                                        req.session.UserId = user._id
-                                        res.redirect("/")
-                                    }
+                // Validate password. bcrypt can compare password to hashed value, and can determine whether hashed value makes sense, taking into account hashing algorithm used. So if it were hashed, could it result in hashed password?
+                bcrypt
+                    .compare(password, user.password)
+                    // Will make it into then block regardless of whether passwords match. Result will be a boolean that is true if passwords are equal, false otherwise
+                    .then((doMatch) => {
+                        if (doMatch) {
+                            req.session.isLoggedIn = true;
+                            req.session.user = user;
+                            return req.session.save((err) => {
+                                if (err) {
+                                    console.log(err);
                                 }
-                                else {
-                                    res.render("auth/login", { message: Helper.ErrorMessage("Có lỗi đã xảy ra vui lòng thử lại sau!") })
-                                }
-                            })
+                                res.redirect('/');
+                            });
                         }
-                        else {
-                            res.render("auth/login", { message: Helper.ErrorMessage("Thông tin tài khoản không đúng hoặc bị khóa!") })
-                        }
+                        return res.status(422).render('auth/login', {
+                            path: '/login',
+                            pageTitle: 'Log In',
+                            errorMessage: 'Invalid email or password.',
+                            oldInput: {
+                                email,
+                                password,
+                            },
+                            validationErrors: [],
+                        });
                     })
-                }
+                    .catch((err) => {
+                        console.log(err);
+                        res.redirect('/login');
+                    });
             })
-        }
+            .catch((err) => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     }
-
-    LogOut(req, res) {
-        res.render('search')
-    }
-
-    LoginView(req, res) {
-        res.render("auth/login",
-            {
-                user: req.user,
-                userInfo: req.userInfo
-            })
-        console.log(req.userInfo)
-        console.log(req.user)
-    }
-
     RegisterView(req, res, next) {
-        res.render('auth/register')
+        let message = req.flash('error');
+        message.length > 0 ? (message = message[0]) : (message = null);
+        res.render('auth/register', {
+            pageTitle: 'Sign Up',
+            errorMessage: message,
+            oldInput: {
+                email: '',
+                password: '',
+                confirmPassword: '',
+            },
+            validationErrors: [],
+        });
     }
 
-    Register(req, res, next) {
-        var { username, name, phoneOrEmail, password } = req.body
-        var isSDT = Helper.checkPhoneValid(phoneOrEmail)
-        var isEmail = Helper.validateEmail(phoneOrEmail)
-        var checkPass = Helper.checkPasswordValidation(password)
-        username = username.toLowerCase()
-        password = password.toLowerCase()
+    postRegister = async (req, res, next) => {
+        const { email, password, confirmPassword } = req.body;
 
-        var phoneFind = ""
-        const phonecrack = Helper.phoneCrack(phoneOrEmail)
-        if (isSDT) {
-            if (phonecrack != null) {
-                phoneFind = phonecrack.phone
-            }
+        const errors = validationResult(req);
+        console.log(errors)
+        if (!errors.isEmpty()) {
+            return res.status(422).render('auth/register', {
+                pageTitle: 'Sign Up',
+                errorMessage: errors.array()[0].msg,
+                oldInput: { email, password, confirmPassword },
+                validationErrors: errors.array(),
+            });
         }
-        if (Helper.isEmpty(phoneOrEmail) || Helper.isEmpty(password) || Helper.isEmpty(username) || Helper.isEmpty(name)) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Vui nhập đầy đủ thông tin!") })
-        }
-        else if (Helper.isHTML(name)) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Họ và tên không hợp lệ!") })
-        }
-        else if (!Helper.checkUsernameValid(username)) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Tài khoản không hợp lệ!") })
-        }
-        else if (!validator.isLength(phoneOrEmail, { min: 6, max: 50 })) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Email hoặc số điện thoại chỉ chấp nhận từ 6 kí tự đến 50 kí tự!") })
-        }
-        else if (!validator.isLength(username, { min: 6, max: 50 })) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Tài khoản chỉ chấp nhận từ 6 kí tự đến 50 kí tự!") })
-        }
-        else if (!validator.isLength(name, { min: 1, max: 100 })) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Tên chỉ chấp nhận từ 1 kí tự đến 100 kí tự!") })
-        }
-        else if (checkPass != null) {
-            res.render("auth/register", { message: Helper.ErrorMessage(checkPass) })
-        }
-        else if (!isSDT && !isEmail) {
-            res.render("auth/register", { message: Helper.ErrorMessage("Email hoặc số điện thoại không hợp lệ!") })
-        }
-        else {
-            var temp = { Username: username }
-            if (isSDT) {
-                temp = { $or: [{ Username: username }, { Username: phoneFind }] }
-            }
-            User.findOne(temp).exec((err, check) => {
-                if (check) {
-                    res.render("auth/register", { message: Helper.ErrorMessage("Tài khoản này đã tồn tại!") })
-                }
-                else {
-                    var temp2 = { email: phoneOrEmail }
-                    if (isSDT) {
-                        temp2 = { phone: phoneFind }
-                    }
 
-                    var isUsernameSdt = Helper.checkPhoneValid(username)
-                    if (isUsernameSdt) {
-                        var phoneFind2 = username
-                        const phonecrackz = Helper.phoneCrack(username)
-                        if (isSDT) {
-                            if (phonecrackz != null) {
-                                phoneFind2 = phonecrackz.phone
-                            }
-                        }
-                        temp2 = { $or: [{ phone: phoneFind }, { phone: phoneFind2 }] }
-                    }
-
-                    UserInfo.findOne(temp2).exec((err, checkEP) => {
-                        if (checkEP) {
-                            res.render("auth/register", { message: Helper.ErrorMessage((isEmail ? "Email" : "Số điện thoại") + " này đã tồn tại trên hệ thống!") })
-                        }
-                        else {
-                            User.create({ Username: username, Password: Helper.generateHash(password) }, (error, user) => {
-                                if (user) {
-                                    var temp = null
-                                    if (isSDT) {
-                                        temp = { uid: user._id, name: name, phone: phoneFind, phoneRegion: phonecrack.region }
-                                    }
-                                    else if (isEmail) {
-                                        temp = { uid: user._id, name: name, email: phoneOrEmail }
-                                    }
-                                    UserInfo.create(temp, (error, userInfo) => {
-                                        if (userInfo) {
-                                            req.session.UserId = user._id
-                                            res.redirect("/")
-                                        }
-                                    })
-                                }
-                                else {
-                                    res.render("auth/register", { message: Helper.ErrorMessage("Tài khoản này đã tồn tại!") })
-                                }
-                            })
-                        }
-                    })
-                }
+        // Generates hashed password. Asynchronous task; returns a promise. Second arg is salt value (how many rounds of hashing will be applied)
+        hash(password, 12)
+            .then((hashedPassword) => {
+                const user = new User({
+                    email,
+                    password: hashedPassword,
+                    // cart: { items: [] },
+                });
+                return user.save();
             })
-        }
+            .then((result) => {
+                res.redirect('/auth/login');
+                // sendMail() provides a promise. Returning in order to chain .catch() and catch any errors
+                // return transporter.sendMail({
+                //     to: email,
+                //     from: 'xuantung6121@gmail.com',
+                //     subject: 'Welcome to WebSite',
+                //     html: '<h3>You have successfully signed up.</h3>',
+                // });
+            })
+            .catch((err) => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
     }
+
+    // [GET: auth/logout]
+    Logout(req, res, next) {
+        req.session.destroy((err) => {
+            if (err) {
+                console.log(err);
+            }
+            res.redirect('/auth/login');
+        });
+    }
+
+    getResetPassword(req, res) {
+        let message = req.flash('error');
+        message.length > 0 ? (message = message[0]) : (message = null);
+        res.render('auth/reset-password', {
+            path: '/reset-password',
+            pageTitle: 'Reset Password',
+            errorMessage: message,
+        });
+    }
+
+    postResetPassword(req, res) {
+
+    }
+
 }
 
-module.exports = new AuthController
+export default new AuthController
