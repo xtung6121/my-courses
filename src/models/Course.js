@@ -7,17 +7,21 @@ const Schema = mongoose.Schema
 const Course = new Schema({
   title: {
     type: String,
-    maxLength: 225
+    maxLength: 225,
+    required: true
   },
   price: {
     type: String,
+    required: true
   },
   description: {
     type: String,
     maxLength: 600,
+    required: true
   },
   imageUrl: {
     type: String,
+    required: true
   },
   // filename part of AWS S3 URL to pass to method that deletes it from bucket
   // imageKey: {

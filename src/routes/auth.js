@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const authController = require('~/controllers/AuthController').default
 const { check, body } = require('express-validator');
-import User, { findOne } from "~/models/User/User";
+import User from "~/models/User/User";
 
 //Middleware về trang chủ nếu đã đăng nhập
 router.use((req, res, next) => {
@@ -16,7 +16,7 @@ router.use((req, res, next) => {
 
 //Các controllers
 
-router.get('/logout', authController.Logout)
+router.post('logout', authController.Logout)
 
 // router.get("/forget", authController.ForgetPassView)
 router.post('/login', [

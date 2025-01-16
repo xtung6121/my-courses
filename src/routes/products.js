@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const productController = require('~/controllers/ProductController')
-
-router.get('/create', productController.create)
-router.post('/store', productController.store)
+const isAuth = require('~/middlewares/IsAuth');
+router.get('/cart', productController.getCart)
+router.get('/create', isAuth, productController.create)
+router.post('/store', isAuth, productController.store)
 router.get('/:id/edit', productController.edit);
 router.post('/handle-form-actions', productController.handerFormActions);
 router.put('/:id', productController.update);

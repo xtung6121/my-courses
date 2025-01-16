@@ -2,7 +2,6 @@ const { validationResult, body } = require('express-validator')
 const Course = require('~/models/Course')
 const { mongooseToObject } = require('~/utils/mongoose')
 
-
 class ProductController {
 
   get500(req, res, next) {
@@ -12,17 +11,19 @@ class ProductController {
       isAuthenticated: req.session.isLoggedIn,
     });
   }
-
   //GET/ products/:slug
   show(req, res, next) {
     Course.findOne({ slug: req.params.slug })
       .then(product => {
-        res.render('courses/show', {
+        res.status(200).render('courses/show', {
           product: mongooseToObject(product),
           isAuthenticated: req.session.isLoggedIn
         })
       })
-      .catch(next)
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
   // [GET]/courses/create
   create(req, res, next) {
@@ -38,48 +39,63 @@ class ProductController {
     product
       .save()
       .then(() => res.redirect('/me/stored/courses', {
-        isAuthenticated: req.session.isLoggedIn
+        // isAuthenticated: req.session.isLoggedIn
       }))
-      .catch(next)
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
   // [GET]/products/:id/edit
   edit(req, res, next) {
     Course.findById(req.params.id)
       .then(product =>
-        res.render('courses/edit',
+        res.status(200).render('courses/edit',
           {
             product: mongooseToObject(product),
-            isAuthenticated: req.session.isLoggedIn
+            // isAuthenticated: req.session.isLoggedIn
           }))
-      .catch(next)
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
 
   // [PUT]/products/:id
   update(req, res, next) {
     Course.updateOne({ _id: req.params.id }, req.body)
-      .then(res.redirect('/me/stored/courses',
-        {
-          isAuthenticated: req.session.isLoggedIn
-        }
+      .then(res.status(200).redirect('/me/stored/courses',
       ))
-      .catch(next)
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
   delete(req, res, next) {
     Course.delete({ _id: req.params.id })
-      .then(res.redirect('back'))
-      .catch(next)
+      .then(res.location(req.get('back')))
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
   forceDelete(req, res, next) {
     Course.deleteOne({ _id: req.params.id })
-      .then(res.redirect('back'))
-      .catch(next)
+      .then(res.location(req.get('back')))
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
 
   // [PATCH] /products/:id/restore
   restore(req, res, next) {
     Course.restore({ _id: req.params.id })
-      .then(res.redirect('back'))
-      .catch(next)
+      .then(res.location(req.get('back')))
+      .catch(err => {
+        console.error('Error searching for products:', err);
+        res.status(500).redirect('/500');
+      })
   }
 
 
@@ -88,7 +104,7 @@ class ProductController {
     switch (req.body.action) {
       case 'delete':
         Course.delete({ _id: { $in: req.body.productIds } })
-          .then(res.redirect('back'))
+          .then(res.location(req.get('back')))
           .catch(next)
 
       case 'forceDelete':
@@ -111,6 +127,10 @@ class ProductController {
     }
   }
 
+
+  getCart(req, res, next) {
+    res.render('courses/cart')
+  }
 
 }
 module.exports = new ProductController();
