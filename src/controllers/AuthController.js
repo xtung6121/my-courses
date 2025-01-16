@@ -150,12 +150,21 @@ class AuthController {
             });
     }
 
-    // [GET: auth/logout]
+    // [POST: auth/logout]
     Logout(req, res, next) {
         req.session.destroy((err) => {
             if (err) {
-                console.log(err);
+                console.log('Error destroying session:', err);
+                return next(err);
             }
+            res.clearCookie('connect.sid', {
+                path: '/',
+                httpOnly: true,
+                secure: false,
+                // Set to true if using HTTPS sameSite: 'strict' // Adjust based on your needs });
+                sameSite: 'strict'
+            })
+            console.log('Session destroyed and cookie cleared')
             res.redirect('/auth/login');
         });
     }

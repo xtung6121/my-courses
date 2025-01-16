@@ -1,10 +1,10 @@
 <style>
-    .section-patigation {
+    .patigation {
         margin-right: 20px;
     }
 </style>
 <section class="bg-light pg-lib-item py-2">
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page search">
         <div class="row ">
             <div class="col-lg-8 offset-lg-2 col-md-12 col-12 ">
                 <div class="text-center mb-2 pb-lg-2">
@@ -23,74 +23,61 @@
                 </div>
             </div>
         </div>
-        <div class="container py-2">
-            <div class="justify-content-center row g-4">
-                {{#each product}}
-                <div class="col-lg-4 col-md-6">
-                    <div class="bg-white shadow rounded">
-                        <a href="/products/{{this.slug}}" class="d-block">
-                            <img src="{{this.imageUrl}}" alt="{{this.title}}" class="img-fluid w-100 rounded-top"
-                                alt="..." width="700" height="480" />
+    </nav>
+    <div class="container py-2">
+        <div class="justify-content-center row g-4">
+            {{#each product}}
+            <div class="col-lg-4 col-md-6">
+                <div class="bg-white shadow rounded">
+                    <a href="/products/{{this.slug}}" class="d-block">
+                        <img src="{{this.imageUrl}}" alt="{{this.title}}" class="img-fluid w-100 rounded-top" alt="..."
+                            width="700" height="480" />
+                    </a>
+                    <div class="py-4 px-3">
+                        <a href="/products/{{this.slug}}" class="text-dark text-decoration-none">
+                            <h4 class="mb-3 fs-5">{{this.title}}
+                            </h4>
                         </a>
-                        <div class="py-4 px-3">
-                            <a href="/products/{{this.slug}}" class="text-dark text-decoration-none">
-                                <h4 class="mb-3 fs-5">{{this.title}}
-                                </h4>
+                        <p class="card-text">{{this.description}}</p>
+                        <div class="align-items-center d-flex justify-content-between small">
+                            <a href="/products/{{this.slug}}"
+                                class="btn btn-primary align-items-center d-flex text-decoration-none">
+                                Xem chi tiết
                             </a>
-                            <p class="card-text">{{this.description}}</p>
-                            <div class="align-items-center d-flex justify-content-between small">
-                                <a href="/products/{{this.slug}}"
-                                    class="btn btn-primary align-items-center d-flex text-decoration-none">
-                                    Xem chi tiết
-                                </a>
-                                <div>
-                                    {{!-- <h4 class="h6 mb-0">TomyShop</h4> --}}
-                                    <p class="mb-0 text-secondary"></p>
-                                </div>
-                                <span class="text-secondary">{{getMinutes createdAt}} mins ago</span>
+                            <div>
+                                {{!-- <h4 class="h6 mb-0">TomyShop</h4> --}}
+                                <p class="mb-0 text-secondary"></p>
                             </div>
+                            <span class="text-secondary">{{getMinutes createdAt}} mins ago</span>
                         </div>
                     </div>
-                    <br></br>
                 </div>
-                {{/each}}
+                <br></br>
             </div>
+            {{/each}}
         </div>
-        <section class="mr-6 section-patigation">
-            <ul class="pagination justify-content-end">
-                <li class="page-item disabled">
-                    {{#if hasPreviousPage}}
-                    <a class="page-link" href="?page={{previousPage}}" tabindex="-1" aria-disabled="true">
-                        {{previousPage}}
-                    </a>
-                    {{/if}}
-                </li>
-                <li class="page-item">
-                    {{#if (and (ne currentPage 1) (ne previousPage 1))}}
-                    <a class="page-link" href="?page=1">1</a>
-                    {{/if}}
-                </li>
-                <li class="page-item">
-                    <!-- Prevent page number display if there's only a single page (relevant for admin products) -->
-                    {{#if (or hasNextPage hasPreviousPage)}}
-                    <a href="?page={{currentPage}}" class="active">{{currentPage}}</a>
-                    {{/if}}
-                </li>
-                <li class="page-item">
-                    {{#if (and (ne lastPage currentPage) (ne nextPage lastPage))}}
-                    <a class="page-link" href="?page={{lastPage}}">{{lastPage}}</a>
-                    {{/if}}
-                </li>
-                <li class="page-item">
-                    {{#if hasNextPage}}
-                    <a class="page-link" href="?page={{nextPage}}">{{nextPage}}</a>
-                    {{/if}}
-                </li>
-            </ul>
-        </section>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination mr-3 justify-content-end">
+            {{#if hasPreviousPage}}
+            <li class="page-item">
+                <a class="page-link" href="?page={{previousPage}}" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {{/if}}
+            {{#if (and (ne currentPage 1) (ne previousPage 1))}}
+            <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+            {{/if}}
+            {{#if (or hasNextPage hasPreviousPage)}}
+            <li class="page-item"><a class="page-link" href="?page={{currentPage}}">{{currentPage}}</a></li>
+            {{/if}}
+            {{#if (and (ne lastPage currentPage) (ne nextPage lastPage))}}
+            <li class="page-item"><a class="page-link" href="?page={{lastPage}}">{{lastPage}}</a></li>
+            {{/if}}
+            {{#if hasNextPage}}
+            <li class="page-item ">
+                <a class="page-link" href="?page={{nextPage}}">Next</a>
+            </li>
+            {{/if}}
+        </ul>
     </nav>
 </section>
-
-<script>
-
-</script>

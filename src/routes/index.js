@@ -6,9 +6,6 @@ const authRouter = require('./auth')
 const errorRouter = require('./error')
 
 function route(app) {
-
-
-
   app.use('/products', productsRouter)
   app.use('/', meRouter)
   app.use('/', newsRouter)

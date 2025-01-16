@@ -14,6 +14,7 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const User = require("~/models/User/User")
 const Handlebars = require('handlebars')
+const MongoStore = require('connect-mongo')
 
 const store = new MongoDBStore({
   uri: env.MONGODB_URI,
@@ -29,7 +30,7 @@ app.use(
     secret: 'my secret',
     resave: false,
     saveUninitialized: false,
-    store
+    store: store
   }))
 
 
@@ -88,6 +89,9 @@ Handlebars.registerHelper('and', function (v1, v2) {
 });
 Handlebars.registerHelper('or', function (v1, v2) {
   return v1 || v2;
+});
+Handlebars.registerHelper('gt', function (v1, v2) {
+  return v1 > v2;
 });
 
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

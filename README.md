@@ -1,5 +1,5 @@
 ```
-* nodejs = v18.16.0
+* nodejs = v18.16.0 => update 22.12.0 to connect DB
 * npm = v9.8.1
 * yarn = v1.22.19
 
@@ -17,22 +17,23 @@
 * "babel-plugin-module-resolver": "^5.0.0"
 ```
 
+Start App: 
 
-Introdution: Website use Nodejs, ExpressJS and Handlebar (because I want to focus to learn Javascript )
+1. npm install 
+2. npm run dev
+3. config db with .env.example
+
+Introdution: Website use Nodejs, ExpressJS and Handlebars (because I want to focus to learning Javascript )
+
+- Basic project structure/terminology notes: Middleware = methods/functions/operations that are called between processing the request and sending the response.
+- An Express app contains [multiple levels of middleware](https://expressjs.com/en/guide/using-middleware.html), such as application-level middleware (`app.use(middleware)` and router-level middleware (e.g., `router.use(middleware)`). `app.use(middleware)` is called every time a request is sent to the server. (`app.get()` is called when the HTTP method is set to GET, whereas `app.use()` is called regardless of the HTTP method.) 
+- These define a route handler file as middleware, which also contains middleware - the route files forward requests to controller "actions," methods that handle incoming requests (for example getNewPassword in controllers/auth.js).
 
 Functions: 
-1. Managerment Courses (I updated code using manage Product is account in the game 2D online, like shop acc  )
-2. Payment with ZaloPay (working..)
-3. Create, Update, Edit and Delete Product 
-4. Login, Logout and isAuthentication  (working..)
-5. Upload file IMG, AWS S3 service interface object 
+1. Management courses with CRUD
+2. Payment with ZaloPay 
+3. Login, Logout
+4. Upload file IMG, AWS S3 service interface object 
 
 
-
-How to clone my project: 
-config db with .env.example
-
-run web: npm run dev
-
-
-Conclusion: Thanks for watching! <3 Like coding with me...
+Conclusion: <3 Like coding with me...
