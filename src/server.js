@@ -14,8 +14,10 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const User = require("~/models/User/User")
 const Handlebars = require('handlebars')
-const MongoStore = require('connect-mongo')
-
+var cors = require('cors')
+import { corsOptions } from '~/config/cors'
+// const role = require('~/models/User/User')
+// const stripe = require('stripe')('pk_test_51Qk2Z6DGR3g5rnGZvOnu3ZneUqKoN7My9ze4JmenMdzToxYd12zBtjK4TEgF8iBy3mqkwTKk5Dq7qDGf0XERNB6100PrbVPKNL');
 const store = new MongoDBStore({
   uri: env.MONGODB_URI,
   collection: 'sessions'
@@ -33,9 +35,10 @@ app.use(
     store: store
   }))
 
+// CORS
+// app.use(cors(corsOptions))
 
 app.use(flash())
-
 // Connect to DB
 db.connect();
 
@@ -43,6 +46,7 @@ app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   next();
 });
+
 
 app.use((req, res, next) => {
   // When you throw an error in synchronous places (outside of callbacks and promises), Express will detect this and execute next error handling middleware. But if error is thrown within async code (in then or catch block), Express error handling middleware won't be executed; app will simply crash; have to use next()
@@ -65,6 +69,14 @@ app.use((req, res, next) => {
     });
 });
 
+
+// function setUser(req, res, next) {
+//   const userId = req.body.userId
+//   if (userId) {
+//     req.user = User.find(user => user.id === userId)
+//   }
+//   next()
+// }
 const hostname = 'localhost'
 const port = 8017
 

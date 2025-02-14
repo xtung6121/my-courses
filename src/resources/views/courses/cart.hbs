@@ -96,12 +96,12 @@
             <!-- cartitem is automatically created (Sequelize) key for inbetween cartitems table and the entry for this product in it -->
             <h1>{{this.productId.title}}</h1>
             <div class="qty">
-                <h2>Qty: {{this.quantity}}</h2>
+                <h2>Số lượng: {{this.quantity}}</h2>
             </div>
-            <form action="/cart-delete-item" method="POST">
+            <form action="products/cart-delete-item" method="POST">
                 <input type="hidden" value="{{this.productId._id}}" name="productId">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                <button class="btn-danger" type="submit">Delete</button>
+                <button class="btn-danger" type="submit">Xóa</button>
             </form>
         </li>
         {{/each}}
@@ -111,7 +111,28 @@
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <button class="btn" type="submit">Checkout</button>
       </form> -->
-        <a class="btn" href="/checkout">Thanh toán</a>
+        <main>
+            <h1>Payment</h1>
+
+            <p>Enable more payment method types <a href="https://dashboard.stripe.com/settings/payment_methods"
+                    target="_blank">in your
+                    dashboard</a>.</p>
+
+            <form id="payment-form">
+                <div id="link-authentication-element">
+                    <!-- Elements will create authentication element here -->
+                </div>
+                <div id="payment-element">
+                    <!-- Elements will create form elements here -->
+                </div>
+                <button id="submit btn-primary">Pay now</button>
+                <div id="error-message">
+                    <!-- Display error message to your customers here -->
+                </div>
+            </form>
+
+            <div id="messages" role="alert" style="display: none;"></div>
+        </main>
     </div>
     {{else}}
     <h1>Không có sản phẩm trong giỏ hàng</h1>

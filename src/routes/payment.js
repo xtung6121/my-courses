@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const buynickController = require('~/controllers/BuyNickController')
+const PaymentController = require('~/controllers/PaymentController')
 
-router.get('/payment/:id', buynickController.getProduct)
-router.get('/payment', buynickController.payment)
-router.get('/', buynickController.index)
+// router.get('/payment/:id', PaymentController.getProduct)
+router.get('/payment', PaymentController.payment)
 
 module.exports = router
