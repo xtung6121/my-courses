@@ -1,10 +1,11 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
 const slug = require('mongoose-slug-updater')
 const mongooseDelete = require('mongoose-delete')
 
 const Schema = mongoose.Schema
 
-const Course = new Schema({
+const Course = new mongoose.Schema({
   title: {
     type: String,
     maxLength: 225,
@@ -27,11 +28,12 @@ const Course = new Schema({
   // imageKey: {
   //   type: String,
   // },
-  // userId: {
-  //   type: Schema.Types.ObjectId,
-  //   // Tells Mongoose which other model is related to data in this field
-  //   ref: 'User',
-  // },
+  userId: {
+    type: Schema.Types.ObjectId,
+    // Tells Mongoose which other model is related to data in this field
+    ref: 'User',
+    required: true,
+  },
   slug: {
     type: String,
     slug: 'title',

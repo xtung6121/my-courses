@@ -1,0 +1,250 @@
+<style>
+    .product-payment-btn {
+        margin-right: 22px;
+    }
+
+    .add-to-cart {
+        display: block;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 24px;
+        opacity: 2px;
+        transform: translateX(red) translateZ(0);
+    }
+
+    .product-payment-btn {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 24px;
+        text-align: center;
+    }
+
+    .modal-body {
+        max-width: 500px;
+        margin: auto;
+        padding: 1em;
+    }
+
+    .custom-modal .qr-img {
+        max-width: 450px;
+        width: 100%;
+        height: auto;
+        align-self: center;
+        /* Căn giữa ảnh nếu muốn */
+    }
+
+    .custom-modal {
+        display: flex;
+        flex-direction: column;
+        /* Sắp xếp theo cột */
+        align-items: flex-start;
+        /* Căn trái cho tất cả phần tử */
+        gap: 0.2rem;
+        /* Khoảng cách đều giữa các phần tử */
+        text-align: left;
+        /* Đảm bảo nội dung căn trái */
+        padding: 3rem;
+        /* Padding bên trong modal (tùy chọn) */
+    }
+</style>
+
+{{!-- Show product --}}
+<section class="py-5">
+    <div class="container py-xl-3 py-lg-2">
+        <div class="row align-items-center">
+            <div class="mb-3 mb-lg-0 col-xxl-5 col-lg-6">
+                <div class="d-flex flex-column mb-3 mb-lg-0 gap-4">
+                    <div>
+                        <h2 class="mb-3 fw-semibold display-4">{{product.title}}</h2>
+                        <p class="lead">{{product.description}}</p>
+                        <p class="lead" style="font-weight:500">{{product.price}} VNĐ</p>
+                    </div>
+                    <div class="d-flex flex-row align-items-center gap-3">
+                        <form action="/products/cart" method="POST">
+                            <button class="btn btn-info mr-4 add-to-cart">Thêm vào giỏ hàng</button>
+                            <input type="hidden" name="productId" value="{{product._id}}">
+                        </form>
+                        <a href="" class="product-payment-btn btn btn-danger" data-toggle="modal"
+                            data-id="{{product._id}}" data-price="{{product.price}}"
+                            data-description="{{product.description}}" data-user-id="{{product.userId}}"
+                            data-target="#payment-show-modal">Mua ngay</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 offset-xxl-1">
+                <div class="position-relative ms-lg-8 ms-xl-0 me-xl-7">
+                    <img class="w-100 rounded-3" src="{{product.imageUrl}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal checkout -->
+<div id="payment-show-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content align-item-center">
+            <div class="modal-header">
+                <h5 class="modal-title">Thanh toán</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-modal">
+                <p class="lead font-weight-bold">
+                    <span id="paid-price" class="align-item-center">Số tiền: {{product.price}} VNĐ</span>
+                </p>
+                <p>
+                    <del class="text-body-tertiary font-weight-bold">
+                        Giá gốc: {{sum 1 product.price }} VNĐ
+                    </del>
+                </p>
+                <p class="font-weight-bold">STK: VietinBank - 103881210173</p>
+                <p>
+                    <span id="paid-content" class="font-weight-bold">
+                        Nội dung chuyển khoản:
+                    </span>
+                </p>
+                <img class="qr-img" src="https://cdn.britannica.com/17/155017-050-9AC96FC8/Example-QR-code.jpg"
+                    alt="QR chuyển tiền">
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-course" data-dismiss="modal" type="button" class="btn btn-danger">Hủy</button>
+                {{!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button> --}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let MY_BANK = {
+            BANK_ID: 'ICB',
+            ACCOUNT_BANK: '103881210173'
+        };
+
+        const paymentBtn = document.querySelector('.product-payment-btn');
+        const paidPriceElement = document.getElementById('paid-price');
+        const paidContentElement = document.getElementById('paid-content');
+        const qrImage = document.querySelector('.qr-img');
+
+        paymentBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            const productId = this.dataset.id;
+            const productPrice = this.dataset.price;
+            const userId = this.dataset.userId;
+
+            // Update payment information
+            paidPriceElement.textContent = `Số tiền: ${productPrice} Vnđ`;
+            paidContentElement.textContent = `Nội dung chuyển khoản: _${productId}_${userId}`;
+
+            // Debounce function to limit updates
+            debounceUpdateQRImage(productPrice, productId);
+
+            await checkPaymentStatus(productId, userId, productPrice);
+
+        });
+
+        function debounceUpdateQRImage(productPrice, productId, userId) {
+            clearTimeout(this.updateTimer);
+            this.updateTimer = setTimeout(() => {
+                const qrImageSrc = `https://img.vietqr.io/image/${MY_BANK.BANK_ID}-${MY_BANK.ACCOUNT_BANK}-compact2.png?amount=${parseFloat(productPrice.replace(/,/g, ''))}&addInfo=${productId}`;
+                qrImage.src = qrImageSrc;
+            }, 300);
+        }
+
+        // Lazy load QR image
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const qrImageSrc = `https://img.vietqr.io/image/${MY_BANK.BANK_ID}-${MY_BANK.ACCOUNT_BANK}-qr_only.png`;
+                    qrImage.src = qrImageSrc;
+                    observer.disconnect();
+                }
+            });
+        });
+        observer.observe(qrImage);
+
+        const API_KEY = 'AK_CS.ffe84fd0e84f11efbafa2fef0d101a5f.7gfQzZYjD1YMJweTpNmVX7e1KszmlqBSzEULJKoASw75qodRv4KWDG9iLYX7WWZ2rF69YGtC'
+
+        const API_GET_KEY_PAID = 'https://oauth.casso.vn/v2/transactions'
+
+        // function checkPaymentStatus kiểm tra giao dịch thành công hay chưa 
+        async function checkPaymentStatus(productId, userId, productPrice) {
+            try {
+                const response = await fetch(API_GET_KEY_PAID, {
+                    headers: {
+                        Authorization: `apikey ${API_KEY}`,
+                        "Content-Type": 'application/json'
+                    },
+                });
+
+                const data = await response.json();
+
+
+                // Kiểm tra cấu trúc dữ liệu trả về
+                if (!data.data || !Array.isArray(data.data.records) || data.data.records.length === 0) {
+                    console.log('Không có giao dịch nào');
+                    return;
+                }
+
+                const records = data.data.records; // Sửa lại để truy cập đúng mảng giao dịch
+                const latestTransaction = records[records.length - 1]; // Lấy giao dịch mới nhất
+
+                lastPrice = latestTransaction.amount
+                lastContent = latestTransaction.description
+
+                // Kiểm tra nội dung chuyển khoản
+                if (lastPrice >= parseFloat(productPrice.replace(/,/g, '')) && lastContent.includes(`${productId}`)) {
+                    alert('Thanh toán thành công!');
+                    await updateUserPaymentStatus(userId, productId, productPrice);
+
+                } else {
+                    console.log('Thanh toán không thành công.');
+                }
+                //if (latestTransaction.description.includes(`${productId} ${userId}`)) {
+                // alert('Thanh toán thành công!');
+                // Cập nhật trạng thái người dùng (ví dụ: gọi API backend)
+                //  await updateUserPaymentStatus(userId, productPrice);
+                //} else {
+                //  console.log('Chưa tìm thấy giao dịch phù hợp.');
+                // }
+            } catch (error) {
+                console.error('Lỗi khi kiểm tra thanh toán:', error);
+            }
+        }
+
+        // function update khi người dùng đã thanh toán thành công
+        async function updateUserPaymentStatus(userId, productId, productPrice) {
+            try {
+                const response = await fetch('/api/update-payment-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        productId: productId,
+                        amount: parseFloat(productPrice.replace(/,/g, '')) // Chuyển đổi số tiền thành số
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Lỗi khi cập nhật trạng thái thanh toán');
+                }
+
+                const data = await response.json();
+                console.log('Cập nhật thành công:', data);
+                return data;
+            } catch (error) {
+                console.error('Lỗi khi gọi API cập nhật trạng thái:', error);
+                throw error;
+            }
+        }
+    });
+</script>

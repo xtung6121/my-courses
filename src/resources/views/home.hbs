@@ -2,23 +2,25 @@
     .patigation {
         margin-right: 20px;
     }
+
+    .parkinsans-font-family {
+        font-family: "Parkinsans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+    }
 </style>
 <section class="bg-light pg-lib-item py-2">
     <nav aria-label="Page search">
-        <div class="row ">
-            <div class="col-lg-8 offset-lg-2 col-md-12 col-12 ">
-                <div class="text-center mb-2 pb-lg-2">
-                    <form method="POST" action="/search">
-                        <div class="form-group">
-                            <label class="p-2" for="search-input">Từ khóa</label>
-                            <input type="text" name="q" class="form-control" id="search-input"
-                                placeholder="Nhập từ khóa...">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-md-12 col-12 mt-4 ">
+                <div class="text-center mb-2 pb-lg-2 p-2">
+                    <form action="/search" method="POST">
+                        <div class="form-group d-flex align-items-center">
+                            <input type="text" class="form-control me-2" name="query"
+                                placeholder="Nhập từ khóa tìm kiếm" required>
+                            <button type="submit" class="btn btn-primary ml-4">Tìm kiếm</button>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                            Tìm kiếm
-                        </button>
                     </form>
                 </div>
             </div>
@@ -38,7 +40,7 @@
                             <h4 class="mb-3 fs-5">{{this.title}}
                             </h4>
                         </a>
-                        <p class="card-text">{{this.description}}</p>
+                        <p class="card-text text-dark">{{this.description}}</p>
                         <div class="align-items-center d-flex justify-content-between small">
                             <a href="/products/{{this.slug}}"
                                 class="btn btn-primary align-items-center d-flex text-decoration-none">

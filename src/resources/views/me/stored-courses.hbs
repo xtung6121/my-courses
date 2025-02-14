@@ -1,7 +1,14 @@
+<style>
+    .btn-trash {
+        color: red;
+        --background: #283044;
+        --background-hover: #1E2235;
+    }
+</style>
 <form class="mt-4" name="container-form" method="POST" action="/products/handle-form-actions">
     <div>
         <h3>Quản lý khóa học</h3>
-        <a href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
+        <a class="btn-trash" href="/me/trash/courses">Thùng rác ({{deletedCount}})</a>
         <div class="mt-4 d-flex align-items-center">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
@@ -70,7 +77,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn muốn xóa sản phẩm này</p>
+                <p>Bạn có chắc chắn muốn xóa sản phẩm này ?</p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa bỏ</button>

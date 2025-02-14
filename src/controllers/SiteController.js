@@ -40,13 +40,22 @@ class SiteController {
   search(req, res) {
     res.render('search')
   }
-  postSearch(req, res) {
+  postSearch(req, res, next) {
     const searchQuery = req.body.query;
 
-    if (typeof searchQuery !== 'string') {
+    // Kiểm tra xem searchQuery có hợp lệ không
+    if (!searchQuery || typeof searchQuery !== 'string') {
       return res.status(400).send('Invalid search query');
     }
-    Course.find({ title: { $regex: searchQuery, $options: 'i' } })
+
+    // Sanitize searchQuery để ngăn ngừa injection
+    const sanitizedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    // Tạo biểu thức chính quy một cách an toàn
+    const regex = new RegExp(sanitizedQuery, 'i');
+
+    // Thực hiện tìm kiếm trong cơ sở dữ liệu
+    Course.find({ title: regex })
       .then(product => {
         res.render('search-results', { product });
       })

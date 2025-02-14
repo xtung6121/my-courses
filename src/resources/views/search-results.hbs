@@ -1,0 +1,32 @@
+<div class="justify-content-center row g-4">
+    <h3>Kết quả tìm kiếm cho "{{searchQuery}}"</h3>
+    {{#if products.length}}
+    <ul class="product-list">
+        {{#each product}}
+        <li class="product-item">
+            <h2>{{this.title}}</h2>
+            <p>{{this.description}}</p>
+            <p>Giá: {{this.price}} VND</p>
+            <a href="/products/{{this.slug}}">Xem chi tiết</a>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <div>
+        {{#if products.length}}
+        <ul class="product-list">
+            {{#each products}}
+            <li class="product-item">
+                <h2>{{this.title}}</h2>
+                <p>{{this.description}}</p>
+                <p>Giá: {{this.price}} VND</p>
+                <a href="/products/{{this._id}}">Xem chi tiết</a>
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <p>Không tìm thấy sản phẩm nào phù hợp với từ khóa "{{searchQuery}}".</p>
+        {{/if}}
+    </div>
+    {{/if}}
+</div>
