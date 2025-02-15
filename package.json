@@ -39,6 +39,7 @@
     "express-validator": "^7.2.1",
     "flash": "^1.1.0",
     "helmet": "^8.0.0",
+    "iconv-lite": "^0.6.3",
     "keygrip": "^1.1.0",
     "method-override": "^3.0.0",
     "moment": "^2.30.1",
