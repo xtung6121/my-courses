@@ -1,7 +1,7 @@
 const { mutipleMongooseToObject } = require('~/utils/mongoose');
 const Course = require('~/models/Course');
 
-const ITEMS_PER_PAGE = 3
+const ITEMS_PER_PAGE = 5
 
 class SiteController {
   index(req, res, next) {
