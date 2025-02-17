@@ -81,7 +81,7 @@ const hostname = 'localhost'
 const port = 8017
 
 // Static files
-app.use(express.static(path.join(__dirname, 'src/public')))
+// app.use(express.static(path.join(__dirname, 'src/public')))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
