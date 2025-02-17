@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-import { env } from '~/config/environment';
-
+// import { env } from '~/config/environment';
+const { env } = require('~/config/environment')
 async function connect() {
   try {
     await mongoose.connect(env.MONGODB_URI);
