@@ -10,8 +10,10 @@ const isAuth = require('~/middlewares/IsAuth')
 
 function route(app) {
   app.use('/products', isAuth, productsRouter)
-  app.use('/admin', isAuth, adminRouter)
+  // app.use('/admin', isAuth, adminRouter)
   app.use('/', newsRouter)
+
+  // Thay vì admin, meRouter đóng vai trò là trang quản lý
   app.use('/', meRouter)
   app.use('/', siteRouter)
   app.use('/', errorRouter)
