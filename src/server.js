@@ -1,5 +1,5 @@
 import express from 'express'
-import { env } from '~/config/environment'
+// import { env } from '~/config/environment'
 const app = express()
 const path = require('path')
 const route = require('~/routes')
@@ -14,14 +14,14 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const User = require("~/models/User/User")
 const Handlebars = require('handlebars')
-var cors = require('cors')
-import { corsOptions } from '~/config/cors'
-// const role = require('~/models/User/User')
-// const stripe = require('stripe')('pk_test_51Qk2Z6DGR3g5rnGZvOnu3ZneUqKoN7My9ze4JmenMdzToxYd12zBtjK4TEgF8iBy3mqkwTKk5Dq7qDGf0XERNB6100PrbVPKNL');
+const { env } = require('~/config/environment')
 const store = new MongoDBStore({
   uri: env.MONGODB_URI,
   collection: 'sessions'
 })
+
+// route init
+route(app)
 
 app.use(helmet.xssFilter())
 
@@ -77,11 +77,8 @@ app.use((req, res, next) => {
 //   }
 //   next()
 // }
-const hostname = 'localhost'
-const port = 8017
 
 // Static files
-// app.use(express.static(path.join(__dirname, 'src/public')))
 app.use(bodyParser.urlencoded({
   extended: true
 }))
@@ -119,13 +116,16 @@ app.engine('hbs', handlebars.engine({
 
 }))
 app.set('view engine', 'hbs')
-app.set('views', path.join(__dirname, 'resources', 'views'))
+app.set('views', path.join(__dirname, '../resources/views'));
 
 
-// route init
-route(app)
-
-
-app.listen(port, hostname, () => {
-  console.log(`Hello Tùng, I am running at ${hostname}:${port}/`)
-})
+if (env.BUILD_MODE === 'production') {
+  app.listen(process.env.PORT, () => {
+    console.log(`Production: Hi ${env.AUTHOR}, Back-end Server is running successfully at Port: ${process.env.PORT}`)
+  })
+} else {
+  // Môi trường Local Dev
+  app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
+    console.log(`Local DEV: Hi ${env.AUTHOR}, Back-end Server is running successfully at Host: ${env.LOCAL_DEV_APP_HOST} and Port: ${env.LOCAL_DEV_APP_PORT}`)
+  })
+}
