@@ -115,9 +115,10 @@ app.engine('hbs', handlebars.engine({
   },
 
 }))
+app.set('views', path.join(__dirname, '../resources/views'));
 app.set('view engine', 'hbs')
-app.set('views', path.join(__dirname, '~/resources/views'));
 
+console.log('PATH:', path.join(__dirname, '../resources/views'))
 
 if (env.BUILD_MODE === 'production') {
   app.listen(process.env.PORT, () => {
