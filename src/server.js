@@ -20,9 +20,6 @@ const store = new MongoDBStore({
   collection: 'sessions'
 })
 
-// route init
-route(app)
-
 app.use(helmet.xssFilter())
 
 app.set('trust proxy', 1)
@@ -35,6 +32,7 @@ app.use(
     store: store
   }))
 
+app.use(require('flash')())
 // CORS
 // app.use(cors(corsOptions))
 
@@ -115,10 +113,16 @@ app.engine('hbs', handlebars.engine({
   },
 
 }))
-app.set('views', path.join(__dirname, '../resources/views'));
+app.set('views', path.join(__dirname, 'build', 'resources', 'views'));
+
+// app.set('views', path.join(__dirname, '../resources/views'));
+
 app.set('view engine', 'hbs')
 
-console.log('PATH:', path.join(__dirname, '../resources/views'))
+console.log('PATH:', path.join(__dirname))
+
+// route init
+route(app)
 
 if (env.BUILD_MODE === 'production') {
   app.listen(process.env.PORT, () => {
