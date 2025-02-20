@@ -36,7 +36,29 @@ class ProductController {
   }
   // [POST]/products/store
   store(req, res, next) {
-    const { title, price, description, imageUrl, imageKey } = req.body; // Destructure the properties from req.body
+    const { title, price, description } = req.body; // Destructure the properties from req.body
+    const image = req.file;
+
+    if (!image) {
+      return res.status(422).render('courses/create', {
+        pageTitle: 'Add Product',
+        editing: false,
+        hasError: true,
+        product: {
+          title,
+          price,
+          description,
+        },
+        errorMessage:
+          'File type not supported. Please upload a JPEG, JPG, or PNG image file.',
+        validationErrors: [],
+      });
+    }
+    const errors = validationResult(req);
+    const imageUrl = req.file.location;
+    console.log(imageUrl);
+    const imageKey = req.file.key;
+
     const product = new Course({
       title,
       price,
