@@ -113,13 +113,11 @@ app.engine('hbs', handlebars.engine({
   },
 
 }))
-app.set('views', path.join(__dirname, 'build', 'resources', 'views'));
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
-// app.set('views', path.join(__dirname, '../resources/views'));
 
 app.set('view engine', 'hbs')
 
-console.log('PATH:', path.join(__dirname))
 
 // route init
 route(app)
