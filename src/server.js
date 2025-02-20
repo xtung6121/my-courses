@@ -1,5 +1,5 @@
 import express from 'express'
-// import { env } from '~/config/environment'
+const appRoot = require('app-root-path');
 const app = express()
 const path = require('path')
 const route = require('~/routes')
@@ -113,7 +113,8 @@ app.engine('hbs', handlebars.engine({
   },
 
 }))
-app.set('views', path.join(__dirname, 'resources', 'views'));
+
+app.set('views', path.join(appRoot.path, 'resources', 'views'));
 
 
 app.set('view engine', 'hbs')

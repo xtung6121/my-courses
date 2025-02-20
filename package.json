@@ -12,7 +12,7 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
     "build": "npm run clean && npm run build-babel",
-    "production": "npm run build && cross-env BUILD_MODE=production node ./src/server.js",
+    "production": "npm run build && cross-env BUILD_MODE=production node ./build/src/server.js",
     "dev": "cross-env BUILD_MODE=dev nodemon --exec babel-node ./src/server.js",
     "watch": "sass --watch src/resources/scss/app.scss src/public/css/styles.css"
   },
@@ -21,6 +21,7 @@
     "@babel/runtime": "^7.23.2",
     "@babel/traverse": "^7.26.9",
     "@dr.pogodin/csurf": "^1.14.1",
+    "app-root-path": "^3.1.0",
     "axios": "^1.7.9",
     "babel-plugin-polyfill-corejs2": "^0.4.12",
     "babel-plugin-polyfill-corejs3": "^0.11.1",
